@@ -1,4 +1,5 @@
 #pragma once
+#include "afxcmn.h"
 
 
 
@@ -29,6 +30,8 @@ private:
 	//OgreControl* m_ogreContro;
 public:
 	afx_msg void OnSize(UINT nType, int cx, int cy);
+	afx_msg void OnAddModel();
+	CListCtrl ModelList;
 };
 
 

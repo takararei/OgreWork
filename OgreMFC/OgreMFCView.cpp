@@ -73,8 +73,8 @@ void COgreMFCView::OnInitialUpdate()
 
 void COgreMFCView::OnRButtonUp(UINT /* nFlags */, CPoint point)
 {
-	ClientToScreen(&point);
-	OnContextMenu(this, point);
+	//ClientToScreen(&point);
+	//OnContextMenu(this, point);
 }
 
 void COgreMFCView::OnContextMenu(CWnd* /* pWnd */, CPoint point)
@@ -310,11 +310,13 @@ void COgreMFCView::OnDraw(CDC* /*pDC*/)
 	if (theApp.isNewOpen)
 	{
 		ogrepart.m_pSceneManager->destroyAllEntities();
+		theApp.mCount=0;
 		theApp.isNewOpen=false;
 	}
 	if (theApp.isOpenFile)
 	{
 		ogrepart.m_pSceneManager->destroyAllEntities();
+		theApp.mCount=0;
 		ogrepart.CreateOpenFile();
 		theApp.isOpenFile=false;
 	}

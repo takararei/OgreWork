@@ -23,14 +23,18 @@ bool ExaListener::frameStarted(const FrameEvent& evt)
 
 void ExaListener::MoveToDestination()
 {
+	
+	
 	if (mDirection == Vector3::ZERO) 
 	{
 		if (nextLocation()) 
 		{
 			// Set walking animation
-			/*mAnimationState1 = mEntity->getAnimationState("Walk");
+			Entity* mEntity=(Entity*)(mCurrentObject->getAttachedObject(mCurrentObject->getName().substr(0,mCurrentObject->getName().length()-4)));
+			mAnimationState1 = mEntity->getAnimationState("Walk");
 			mAnimationState1->setLoop(true);
-			mAnimationState1->setEnabled(true);*/
+			mAnimationState1->setEnabled(true);
+			
 		}
 	}
 	else
@@ -44,19 +48,17 @@ void ExaListener::MoveToDestination()
 			{
 				return;
 			}
-			mCurrentObject->setPosition(mDestination);
+			mCurrentObject->setPosition(mDestination+Vector3(0,15,0));//需要修改一下高度
 			mDirection = Vector3::ZERO;
-			// Set animation based on if the robot has another point to walk to. 
+			
 			if (!nextLocation())
 			{
-				// Set Idle animation                     
-				/*mAnimationState2 = mEntity->getAnimationState("Idle");
-				mAnimationState2->setLoop(true);
-				mAnimationState2->setEnabled(true);*/
+				// Set Idle animation   
+				Entity* mEntity=(Entity*)(mCurrentObject->getAttachedObject(mCurrentObject->getName().substr(0,mCurrentObject->getName().length()-4)));
+				mAnimationState1 = mEntity->getAnimationState("Idle");
+				mAnimationState1->setLoop(false);
+				mAnimationState1->setEnabled(true);
 			} 
-			else
-			{
-			}
 		}
 		else
 		{
@@ -76,6 +78,7 @@ void ExaListener::MoveToDestination()
 			mCurrentObject->translate(mDirection * move);
 		} 
 	} 
+	mAnimationState1->addTime(mTimeSinceLastFrame);
 
 }
 
@@ -156,6 +159,10 @@ void ExaListener::SelectModelMove()
 {
 	if (mLMouseDown)
 	{
+		if (mCurrentObject==NULL)
+		{
+			return;
+		}
 		Ray mouseRay = mTrayMgr->getCursorRay(_Cam);
 		_RaySceneQuery->setRay(mouseRay);
 		_RaySceneQuery->setQueryMask(0);
@@ -270,7 +277,7 @@ bool ExaListener::mousePressed(const OIS::MouseEvent &e, OIS::MouseButtonID id)
 					Entity *ent;
 					char name[20];
 					char t[3];
-					String modelname=_ModelName+itoa(theApp.mCount++,t,10);
+					String modelname=_ModelName+itoa(theApp.mCount,t,10);
 					sprintf(name, modelname.c_str(), theApp.mCount);
 					ent = _sceneManager->createEntity(name, _ModelName);
 					mCurrentObject = _sceneManager->getRootSceneNode()->createChildSceneNode(String(name) + "Node");
@@ -279,7 +286,8 @@ bool ExaListener::mousePressed(const OIS::MouseEvent &e, OIS::MouseButtonID id)
 					Ogre::Vector3 pos;
 					pos=itr->worldFragment->singleIntersection;
 
-					theApp.mogredata.count=theApp.mCount;
+					theApp.mogredata.count=theApp.mCount+1;
+					theApp.mCount++;
 
 					if(_ModelName=="Robot.mesh")//1
 					{
@@ -338,7 +346,7 @@ bool ExaListener::mousePressed(const OIS::MouseEvent &e, OIS::MouseButtonID id)
 			{
 
 				mWalkList.clear();
-				Vector3 t=Vector3(itr->worldFragment->singleIntersection.x,0,itr->worldFragment->singleIntersection.z);
+				Vector3 t=Vector3(itr->worldFragment->singleIntersection.x,itr->worldFragment->singleIntersection.y,itr->worldFragment->singleIntersection.z);
 				mWalkList.push_back(t);
 
 			}

@@ -20,7 +20,7 @@ void OgreData::Serialize(CArchive& ar)
 	if(ar.IsLoading())
 	{
 		ar>>count;
-		for (int i=0;i<count;i++)
+		for (int i=0;i<count+1;i++)
 		{
 			ar>>scale[i];
 			ar>>posX[i];
@@ -33,7 +33,7 @@ void OgreData::Serialize(CArchive& ar)
 	{
 		ar<<count;
 
-		for (int i=0;i<count;i++)
+		for (int i=0;i<count+1;i++)
 		{
 			ar<<scale[i];
 			ar<<posX[i];

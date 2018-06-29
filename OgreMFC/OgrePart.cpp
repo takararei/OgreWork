@@ -119,6 +119,7 @@ void OgrePart::CreateCamera(void)
 	m_pCamera->lookAt(Vector3(0,0,0));
 	m_pCamera->setNearClipDistance(5);
 	m_pCamera->setFarClipDistance(0);
+	
 }
 void OgrePart::CreateViewPort()
 {
@@ -139,21 +140,20 @@ void OgrePart::LoadResource()
 
 void OgrePart::CreateScene()
 {
-	
+	m_pSceneManager->setShadowTechnique(SHADOWTYPE_STENCIL_ADDITIVE);
 	//m_pSceneManager->setAmbientLight(ColourValue(1.0,1.0,1.0));
-
 	m_pSceneManager->setSkyDome(true,"Examples/CloudySky",65);
 	m_pSceneManager->setWorldGeometry("terrain.cfg");
-	m_pSceneManager->setShadowTechnique(SHADOWTYPE_STENCIL_ADDITIVE);
 
 }
 
 void OgrePart::CreateEntity()
 {
-	ent1 = m_pSceneManager->createEntity("sphere","ninja.mesh");
+	/*ent1 = m_pSceneManager->createEntity("sphere","¿ÝÊ÷1.mesh");
 	node1 = m_pSceneManager->getRootSceneNode()->createChildSceneNode();
-	node1->translate(Vector3(50,0,0));
-	node1->attachObject(ent1);
+	node1->translate(Vector3(135,20,250));
+	node1->scale(0.3,0.3,0.3);
+	node1->attachObject(ent1);*/
 	//m_pSceneManager->destroyAllEntities();
 }
 
@@ -198,34 +198,76 @@ void OgrePart::Reset()
 
 void OgrePart::CreateOpenFile()
 {
-	for (int i=0;i<theApp.mogredata.count;i++)
+	
+	for (int i=0;i<theApp.mogredata.count+1;i++)
 	{
-		int index=theApp.mogredata.modelname[i];
-		String Modelname;
-		if (index==0)
-			continue;
-		else if (index==1)
-			Modelname="Robot.mesh";
-		else if (index==2)
-			Modelname="Ninja.mesh";
-		else if (index==3)
-			Modelname="Sinbad.mesh";
+		if (i!=0)
+		{
+			int index=theApp.mogredata.modelname[i];
+			String Modelname;
+			if (index==1)
+				Modelname="Robot.mesh";
+			else if (index==2)
+				Modelname="Ninja.mesh";
+			else if (index==3)
+				Modelname="Sinbad.mesh";
 
-		char name[20];
-		char t[3];
-		String modelname=Modelname+itoa(i+1,t,10);
-		sprintf(name, modelname.c_str(), i+1);
+			char name[20];
+			char t[3];
+			String modelname=Modelname+itoa(i,t,10);
+			sprintf(name, modelname.c_str(), i);
 
-		Entity *ent;
-		ent = m_pSceneManager->createEntity(name,Modelname);
-		SceneNode *snode;
-		snode=m_pSceneManager->getRootSceneNode()->createChildSceneNode(String(name) + "Node");
-		snode->attachObject(ent);
-		snode->setScale(theApp.mogredata.scale[i],theApp.mogredata.scale[i],theApp.mogredata.scale[i]);
-		snode->setPosition(theApp.mogredata.posX[i],theApp.mogredata.posY[i],theApp.mogredata.posZ[i]);
+			Entity *ent;
+			ent = m_pSceneManager->createEntity(name,Modelname);
+			SceneNode *snode;
+			snode=m_pSceneManager->getRootSceneNode()->createChildSceneNode(String(name) + "Node");
+			snode->attachObject(ent);
+			snode->setScale(theApp.mogredata.scale[i],theApp.mogredata.scale[i],theApp.mogredata.scale[i]);
+			snode->setPosition(theApp.mogredata.posX[i],theApp.mogredata.posY[i],theApp.mogredata.posZ[i]);
+		}
+		
 		
 	}
-	theApp.mCount=theApp.mogredata.count;
-	theApp.mogredata.posX[2];
+	theApp.mCount=theApp.mogredata.count-1;
+	//theApp.mogredata.posX[2];
 	
+}
+
+void OgrePart::AddOtherModel(int str)
+{
+	String mname;
+	switch(str)
+	{
+	case 0:
+		mname="°×èë.mesh";
+		break;
+	case 1:
+		mname="ºì·ãÊ÷.mesh";
+		break;
+	case 2:
+		mname="²èÊ÷1.mesh";
+		break;
+	case 3:
+		mname="´óÖñ1.mesh";
+		break;
+	case 4:
+		mname="ºúÑî1.mesh";
+		break;
+	case 5:
+		mname="¿ÝÊ÷1.mesh";
+		break;
+		
+	}
+	Entity *ent;
+	char t[3];
+	String modelname=str+itoa(otherCount,t,10);
+	ent = m_pSceneManager->createEntity(modelname,mname);
+	SceneNode *snode;
+	snode=m_pSceneManager->getRootSceneNode()->createChildSceneNode(String(modelname) + "Node");
+	snode->attachObject(ent);
+	snode->setScale(0.3,0.3,0.3);
+	snode->setPosition(135,20,250);
+
+	otherCount++;
+
 }

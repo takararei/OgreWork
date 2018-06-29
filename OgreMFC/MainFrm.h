@@ -26,7 +26,7 @@ public:
 public:
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
 	virtual BOOL LoadFrame(UINT nIDResource, DWORD dwDefaultStyle = WS_OVERLAPPEDWINDOW | FWS_ADDTOTITLE, CWnd* pParentWnd = NULL, CCreateContext* pContext = NULL);
-
+	CMySplitter m_wndSplitter;
 // й╣ож
 public:
 	virtual ~CMainFrame();
@@ -51,7 +51,7 @@ protected:
 	DECLARE_MESSAGE_MAP()
 
 private:
-	CMySplitter m_wndSplitter;
+	
 	virtual BOOL OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext* pContext);
 };
 

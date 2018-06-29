@@ -23,7 +23,7 @@ public:
 	Camera* m_pCamera;
 	SceneNode *node1; Entity *ent1;
 	FrameListener *mFrameListener;
-
+	int otherCount;
 	void SetupResource(void);
 	void SetupConfig(void);
 	//void CreateRanderWind();
@@ -39,6 +39,7 @@ public:
 	void Reset();
 
 	void CreateOpenFile();
+	void AddOtherModel(int str);
 	
 };
 
